@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ll power(int base,int  pow)
+{
+    ll y=1;
+    for(int i=1; i<=pow; i++)
+        y=y*base;
+    return y;
+}
+ll to_dec(int a,string str)
+{
+    ll l=str.size(),i,j,x,xx=0;
+    for(j=0,i=l-1; j<l; j++,i--)
+    {
+        if(str[i]>='A' && str[i]<='Z')
+            x=str[i]-55;
+        else
+            x=str[i]-48;
+        xx=xx+(x*power(a,j));
+    }
+    return xx;
+}
+string to_bin(ll xx)
+{
+    string str;
+    while(xx)
+    {
+        str+=((xx%2)+48);
+        xx=xx/2;
+    }
+    reverse(str.begin(),str.end());
+    return str;
+}
+int main()
+{
+   
+    char ch;
+    string str,qtr;
+    ll t,first,sec,i,x;
+    cin>>t;
+    while(t--)
+    {
+        cin>>str>>ch>>qtr;
+
+        first=to_dec(16,str);
+        sec=to_dec(16,qtr);
+        if(ch=='+')x=first+sec;
+        else if(ch=='-')x=first-sec;
+
+        str=to_bin(first);
+        for(i=0;i<(13-str.size());i++)
+            cout<<'0';
+        cout<<str;
+        cout<<" "<<ch<<" ";
+         str=to_bin(sec);
+         for(i=0;i<(13-str.size());i++)
+            cout<<'0';
+        cout<<str;
+        cout<<" = "<<(x)<<endl;
+    }
+    return 0;
+}
