@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+string sum(string str,string qtr)
+{
+    string New;
+    reverse(str.begin(), str.end());
+    reverse(qtr.begin(), qtr.end());
+    int length=max(str.size(),qtr.size()),xx,yy=0,x,y;
+    for(int i=0; i<length; i++)
+    {
+        if(i<str.size())
+            x=str[i]-48;
+        else
+            x=0;
+        if(i<qtr.size())
+            y=qtr[i]-48;
+        else
+            y=0;
+
+        xx=(x+y+yy)%10;
+        yy=(x+y+yy)/10;
+
+        New+=(xx+48);
+        if(length-1==i && yy>0)
+            New+=(yy+48);
+    }
+    reverse(New.begin(), New.end());
+    return  New;
+}
+string multiply(string a, string b)
+{
+    string dum="",New="";
+    reverse(a.begin(),a.end());
+    reverse(b.begin(),b.end());
+    int l_a=a.size(),l_b=b.size();
+    int rem,i,j,k,x,y,z;
+    for(i=0; i<l_a; i++)
+    {
+        dum="";
+        rem=0;
+        for(k=1; k<=i; k++)
+            dum+="0";
+        for(j=0; j<l_b; j++)
+        {
+
+            x=a[i]-48;
+            y=b[j]-48;
+            z=(x*y)+rem;
+            dum+=((z%10)+48);
+            rem=(z/10);
+        }
+        if(rem>0)
+            dum+=(rem+48);
+        reverse(dum.begin(),dum.end());
+        New=sum(New,dum);
+    }
+    int p=0;
+    for(i=0;i<New.size();i++)
+    {
+        if(New[i]!='0') p=1;
+        if(New[i]=='0' && p==0)
+        {
+           New.erase(New.begin()+i);
+           i--;
+        }
+    }
+    if(New.size()==0)New="0";
+    return New;
+}
+int main()
+{
+    string x,y,z;
+    while(cin>>x>>y)
+    {
+        z=multiply(x,y);
+        cout<<z<<endl;
+    }
+    return 0;
+}
