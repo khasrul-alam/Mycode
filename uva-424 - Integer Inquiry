@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+string sum(string str,string qtr)
+{
+    string New;
+    reverse(str.begin(), str.end());
+    reverse(qtr.begin(), qtr.end());
+    int length=max(str.size(),qtr.size()),xx,yy=0,x,y;
+    for(int i=0; i<length; i++)
+    {
+        if(i<str.size())
+            x=str[i]-48;
+        else
+            x=0;
+        if(i<qtr.size())
+            y=qtr[i]-48;
+        else
+            y=0;
+
+        xx=(x+y+yy)%10;
+        yy=(x+y+yy)/10;
+
+        New+=(xx+48);
+        if(length-1==i && yy>0)
+            New+=(yy+48);
+    }
+    reverse(New.begin(), New.end());
+    return  New;
+}
+int main()
+{
+
+    string str="0",qtr;
+    while(1)
+    {
+        cin>>qtr;
+        if(qtr=="0") break;
+        str=sum(str,qtr);
+    }
+    cout<<str<<endl;
+    return 0;
+}
