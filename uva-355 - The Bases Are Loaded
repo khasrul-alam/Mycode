@@ -1,0 +1,205 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll unsigned long long int
+string dif(string  str,string qtr)
+{
+    string New;
+    reverse(str.begin(), str.end());
+    reverse(qtr.begin(), qtr.end());
+    int length=str.size(),xx,yy=0,x,y,rem=0;
+    for(int i=0; i<length; i++)
+    {
+        if(i<str.size())
+            x=str[i]-48;
+        else
+            x=0;
+        if(i<qtr.size())
+            y=qtr[i]-48;
+        else
+            y=0;
+
+        if(x>=(y+rem))
+        {
+            xx=(x-y-rem);
+            rem=0;
+        }
+        else if(x<(y+rem))
+        {
+            x+=10;
+            xx=(x-y-rem);
+            rem=1;
+        }
+
+        New+=(xx+48);
+    }
+    reverse(New.begin(), New.end());
+
+    for(int i=0; i<New.size(); i++)
+    {
+
+        if(New[i]!='0')
+            break;
+        else if(New[i]=='0')
+        {
+            New.erase(New.begin()+i);
+            i--;
+        }
+    }
+    if(New.size()==0)
+        New="0";
+    return  New;
+}
+string sum(string str,string qtr)
+{
+    string New;
+    reverse(str.begin(), str.end());
+    reverse(qtr.begin(), qtr.end());
+    int length=max(str.size(),qtr.size()),xx,yy=0,x,y;
+    for(int i=0; i<length; i++)
+    {
+        if(i<str.size())
+            x=str[i]-48;
+        else
+            x=0;
+        if(i<qtr.size())
+            y=qtr[i]-48;
+        else
+            y=0;
+
+        xx=(x+y+yy)%10;
+        yy=(x+y+yy)/10;
+
+        New+=(xx+48);
+        if(length-1==i && yy>0)
+            New+=(yy+48);
+    }
+    reverse(New.begin(), New.end());
+    return  New;
+}
+string multiply(string a, string b)
+{
+    string dum="",New="";
+    reverse(a.begin(),a.end());
+    reverse(b.begin(),b.end());
+    int l_a=a.size(),l_b=b.size();
+    int rem,i,j,k,x,y,z;
+    for(i=0; i<l_a; i++)
+    {
+        dum="";
+        rem=0;
+        for(k=1; k<=i; k++)
+            dum+="0";
+        for(j=0; j<l_b; j++)
+        {
+
+            x=a[i]-48;
+            y=b[j]-48;
+            z=(x*y)+rem;
+            dum+=((z%10)+48);
+            rem=(z/10);
+        }
+        if(rem>0)
+            dum+=(rem+48);
+        reverse(dum.begin(),dum.end());
+        New=sum(New,dum);
+    }
+    return New;
+}
+string power(int base,int  pow)
+{
+    string x=to_string(base),y="1";
+    for(int i=1; i<=pow; i++)
+        y=multiply(y,x);
+    return y;
+}
+string to_dec(int a,string str)
+{
+    int l,i,j,x;
+    l=str.size();
+    string xx="0",m,d;
+   for(j=0,i=l-1;j<l;j++,i--)
+   {
+       d=str[i];
+       if(str[i]>='A' && str[i]<='Z')
+       {
+           x=str[i]-55;
+           d=to_string(x);
+       }
+       m=multiply(d,power(a,j));
+       xx=sum(xx,m);
+   }
+   return xx;
+}
+string div(string number, int divisor)
+{
+    string ans;
+    int idx = 0,temp;
+    temp = number[idx] - '0';
+    while (temp < divisor)
+        temp = temp * 10 + (number[++idx] - '0');
+
+    while (number.size() > idx) {
+        ans += (temp / divisor) + '0';
+        temp = (temp % divisor) * 10 + number[++idx] - '0';
+    }
+    if (ans.length() == 0)
+        return "0";
+    return ans;
+}
+string to_b(int b,string str)
+{
+    string xx,New="",res,yy;
+    int p;
+    while(1)
+    {
+        res=div(str,b);
+        xx=multiply(res,to_string(b));
+        yy=dif(str,xx);
+        p=stoi(yy);
+        if(p>9)
+        {
+            p=(p-9)+64;
+        }
+        else
+        {
+            p=p+48;
+        }
+        New=New+char(p);
+        str=res;
+        if(str=="0") break;
+
+    }
+    reverse(New.begin(),New.end());
+    return New;
+}
+int main()
+{
+   /* freopen("out.txt","w",stdout);*/
+    ll b,l,i,j,x,y,a,p;
+    string str,qtr,xx;
+    while(cin>>a>>b>>str)
+    {
+        p=0;
+        for(i=0;i<str.size();i++)
+        {
+            if(str[i]>='A' && str[i]<='Z')
+                x=str[i]-55;
+            else
+                x=str[i]-48;
+            if(x>=a)
+            {
+                p=1;
+                break;
+            }
+        }
+        if(p==1){
+            cout<<str<<" is an illegal base "<<a<<" number\n";
+            continue;
+        }
+        xx=to_dec(a,str);
+        xx=to_b(b,xx);
+        cout<<str<<" base "<<a<<" = "<<xx<<" base "<<b<<endl;
+    }
+
+    return 0;
+}
