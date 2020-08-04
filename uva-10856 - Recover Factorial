@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n=2800000;
+vector<int> prime(2800001);
+vector<int> pdiv(2800001);
+void sieve()
+{
+    prime[0]=1,prime[1]=1;
+    for(int i=2;i*i<n;i++)
+    {
+        if(prime[i]==1) continue;
+        for(int j=2;i*j<n;j++)
+            prime[i*j]=1;
+    }
+}
+void div()
+{
+    int srt;
+    for(int j=2;j<n;j++)
+    {
+        if(prime[j]==0)
+        {
+            pdiv[j]=1;
+            continue;
+        }
+        srt=sqrt(j);
+        for(int i=2;i<=srt;i++)
+        {
+            if(j%i==0)
+            {
+                pdiv[j]=pdiv[j]+pdiv[i]+pdiv[j/i];
+                break;
+            }
+        }
+    }
+}
+int main()
+{
+  /*  freopen("out.txt","w",stdout);*/
+    int x;
+    sieve();
+    div();
+    for(int i=1;i<n;i++)
+        pdiv[i]+=pdiv[i-1];
+   for(int i=1;;i++)
+   {
+       cin>>x;
+       if(x<0)break;
+       printf("Case %d: ",i);
+       for(int j=0;j<n;j++)
+       {
+           if(pdiv[j]==x)
+           {
+               cout<<j<<"!"<<endl;
+               break;
+           }
+           else if(pdiv[j]>x)
+           {
+               cout<<"Not possible.\n";
+               break;
+           }
+       }
+
+   }
+   return 0;
+}
