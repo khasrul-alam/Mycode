@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+ll power(int base,int  pow)
+{
+    ll y=1;
+    for(int i=1; i<=pow; i++)
+        y=y*base;
+    return y;
+}
+ll to_dec(int a,string str)
+{
+    ll l=str.size(),i,j,x,xx=0;
+    for(j=0,i=l-1; j<l; j++,i--)
+    {
+        if(str[i]>='A' && str[i]<='Z')
+            x=str[i]-55;
+        else
+            x=str[i]-48;
+        xx=xx+(x*power(a,j));
+    }
+    return xx;
+}
+
+int main()
+{
+
+    int p=0,i,j,la,lb,x;
+    char a[150],b[150];
+    string str,qtr;
+    long long xx,yy;
+    while(scanf("%s %s",&a,&b)!=EOF)
+    {
+        p=0,la=-5,lb=-5;
+        str=a,qtr=b;
+        for(i=0; i<str.size(); i++)
+        {
+            if(str[i]>='A' && str[i]<='Z')
+                x=str[i]-55;
+            else
+                x=str[i]-48;
+            la=max(la,x);
+        }
+        for(i=0; i<qtr.size(); i++)
+        {
+            if(qtr[i]>='A' && qtr[i]<='Z')
+                x=qtr[i]-55;
+            else
+                x=qtr[i]-48;
+            lb=max(lb,x);
+        }
+        p=0;
+        for(i=2; i<=36; i++)
+        {
+            if(i<=la)
+                continue;
+            xx=to_dec(i,str);
+            for(j=2; j<=36; j++)
+            {
+                if(j<=lb)
+                    continue;
+                yy=to_dec(j,qtr);
+                if(xx==yy)
+                {
+                    cout<<str<<" (base "<<i<<") = "<<qtr<<" (base "<<j<<")"<<endl;
+                    p=1;
+                    break;
+                }
+            }
+            if(p)
+                break;
+
+        }
+        if(p==0)
+            cout<<str<<" is not equal to "<<qtr<<" in any base 2..36\n";
+    }
+
+    return 0;
+}
