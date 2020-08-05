@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+
+int cardinality(ll n)
+{
+    ll i,j,l,sq,x;
+    vector<ll> v;
+    set<pair<ll,ll> > s;
+    pair<ll,ll> p;
+    sq=sqrt(n);
+    for(i=1; i<=sq; i++)
+    {
+        if(n%i==0)
+        {
+            v.push_back(i);
+            v.push_back(n/i);
+        }
+    }
+
+    if(sq*sq==n){
+        v.erase(v.end()-1);
+    }
+    sort(v.begin(),v.end());
+    l=v.size(),x;
+    for(i=0; i<l; i++)
+    {
+        for(j=i; j<l; j++)
+        {
+
+            x=__gcd(v[i],v[j]);
+            x=(v[i]*v[j])/x;
+            if(x==n)
+            {
+
+                p.first=min(v[i],v[j]);
+                p.second=max(v[i],v[j]);
+                s.insert(p);
+
+            }
+        }
+
+    }
+
+    return s.size();
+}
+
+
+int main()
+{
+   /* freopen("out.txt","w",stdout);*/
+    ll n;
+    while(scanf("%lld",&n) && n!=0)
+    {
+        cout<<n<<' '<<cardinality(n)<<endl;
+    }
+    return 0;
+}
