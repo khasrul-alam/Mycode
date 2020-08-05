@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    /* freopen("out.txt","w",stdout);*/
+    vector<int> num;
+    int t,i,n,p;
+    cin>>t;
+    while(t--)
+    {
+        num.clear();
+        cin>>n;
+        if(n==1)num.push_back(1);
+        for(i=9; i>=2; i--)
+        {
+            if(n%i==0)
+            {
+                num.push_back(i);
+                n/=i;
+                i++;;
+            }
+        }
+
+        if(n>9)
+            cout<<-1<<endl;
+        else
+        {
+            sort(num.begin(),num.end());
+            for(i=0; i<num.size(); i++)
+                cout<<num[i];
+            cout<<endl;
+        }
+    }
+    return 0;
+}
